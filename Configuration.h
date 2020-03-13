@@ -290,7 +290,7 @@ static const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the 
 // Disables axis when it's not being used.
 #define DISABLE_X false
 #define DISABLE_Y false
-#define DISABLE_Z true
+#define DISABLE_Z false
 #define DISABLE_E false // For all extruders
 
 #define INVERT_X_DIR true    // for Mendel set to false, for Orca set to true
@@ -309,12 +309,12 @@ static const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the 
 #define min_software_endstops true // If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops true  // If true, axis won't move to coordinates greater than the defined lengths below.
 
-// Travel limits after homing
-#define X_MAX_POS_DEFAULT 150	/* --RW-- */
+// Travel limits after homing (units are in millimeters)
+#define X_MAX_POS_DEFAULT 660	/* --RW-- */
 #define X_MIN_POS_DEFAULT 0
-#define Y_MAX_POS_DEFAULT 150	/* --RW-- */
+#define Y_MAX_POS_DEFAULT 520	/* --RW-- */
 #define Y_MIN_POS_DEFAULT 0
-#define Z_MAX_POS_DEFAULT 150	/* --RW-- */
+#define Z_MAX_POS_DEFAULT 600	/* --RW-- */
 #define Z_MIN_POS_DEFAULT 0
 
 #define X_MAX_LENGTH (base_max_pos[0] - base_min_pos[0])

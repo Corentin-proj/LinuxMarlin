@@ -5,14 +5,24 @@
 struct gpio_context gpio_cxt[NGPIO+1];
 mraa_i2c_context temp_sensor;
 
+/*
 static const int minnowmax_pin_mapping[NGPIO+1] = {
 	-1, -1, -1, -1, -1, 476, 481,
 	477, 480, 478, 483, 479, 482,
 	499, 472, 498, 473, 485, 475,
 	484, 474, 338, 504, 339, 505,
 	//340, 464, 
-	340, 509,  /* Turbot */
+	340, 509,  // Turbot
 };
+*/
+
+static const int minnowmax_pin_mapping[NGPIO+1] = {
+	50, 51, 32, 18, 28, 17, 24,
+	27, 26, 19, 16, 25, 38,
+	39, 44, 45, 46, 47, 48,
+	49, //pinmapping intel galileo 2
+};
+
 
 static const char minnowmax_pin_assignment[NGPIO+1][10] = {
 	"NONEXIST", "GND", "GND", "+5V", "+3V",

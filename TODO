@@ -1,3 +1,0 @@
-1. Temp read starts from 0, shouldn't it be room temp?
-2. PID control not tuned
-3. F_CPU

@@ -25,9 +25,9 @@
 #include "pins.h"
 #include <signal.h>
 
-/* only support this frequency value for now */
-//XXX: what is the value for MinnowMAX
+//CPU frequency in Hz
 #define F_CPU 16000000
+//#define F_CPU 400000000 //400Mhz
 
 #define ECHO_FLOAT(x) printf("%lf", x)
 #define ECHO_STRING(x) printf("%s", x)
