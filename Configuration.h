@@ -326,11 +326,11 @@ static const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the 
 
 #ifdef ENABLE_AUTO_BED_LEVELING
 
-  // these are the positions on the bed to do the probing. 
+  // these are the positions on the bed to do the probing.
   // NOTE: if the absolute value of the probe offset (x,y directions) is > 10, we have to move probe points inboard on that axis.
   #define LEFT_PROBE_BED_POSITION (bed_level_probe_offset[0] <= 10 ? 10 : bed_level_probe_offset[0])
   #define RIGHT_PROBE_BED_POSITION (bed_level_probe_offset[0] >= -10 ? X_MAX_LENGTH - 10 : X_MAX_LENGTH + bed_level_probe_offset[0])
-  #define BACK_PROBE_BED_POSITION (bed_level_probe_offset[1] >= -10 ? Y_MAX_LENGTH - 10 : Y_MAX_LENGTH + bed_level_probe_offset[1]) 
+  #define BACK_PROBE_BED_POSITION (bed_level_probe_offset[1] >= -10 ? Y_MAX_LENGTH - 10 : Y_MAX_LENGTH + bed_level_probe_offset[1])
   #define FRONT_PROBE_BED_POSITION (bed_level_probe_offset[1] <= 10 ? 10 : bed_level_probe_offset[1])
 
   // these are the offsets to the prob relative to the extruder tip (Hotend - Probe).  Default below prevents Metal Plus from probing off-bed.
@@ -374,12 +374,12 @@ static const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the 
   // with accurate bed leveling, the bed is sampled in a ACCURATE_BED_LEVELING_POINTSxACCURATE_BED_LEVELING_POINTS grid and least squares solution is calculated
   // Note: this feature occupies 10'206 byte
   //#define ACCURATE_BED_LEVELING
-  
+
   #ifdef ACCURATE_BED_LEVELING
      // I wouldn't see a reason to go above 3 (=9 probing points on the bed)
     #define ACCURATE_BED_LEVELING_POINTS 2
   #endif
-  
+
 #endif
 
 // The position of the homing switches
@@ -399,8 +399,8 @@ static const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the 
 
 // default settings
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,2020,96}
-#define DEFAULT_MAX_FEEDRATE          {125, 125, 5, 14}    // (mm/sec)    
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {21,21,2560,96}//{80,80,2020,96}
+#define DEFAULT_MAX_FEEDRATE          {300, 300, 10, 14}    // (mm/sec)
 #define DEFAULT_MAX_ACCELERATION      {2000,2000,30,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
 #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves

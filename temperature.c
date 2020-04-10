@@ -34,7 +34,7 @@
 #include "Marlin.h"
 #include "temperature.h"
 #include "thermistortables.h"
-#include "Arduino.h"
+#include "Arduino_marlin.h"
 
 //===========================================================================
 //=============================public variables============================

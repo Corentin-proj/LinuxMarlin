@@ -19,15 +19,25 @@
 // #include <avr/eeprom.h>
 // #include <avr/interrupt.h>
 
-#include "Arduino.h"
+#include "Arduino_marlin.h"
 #include "fastio.h"
 #include "Configuration.h"
 #include "pins.h"
 #include <signal.h>
 
 //CPU frequency in Hz
-#define F_CPU 16000000
-//#define F_CPU 400000000 //400Mhz
+//#define F_CPU 16000000
+#define F_CPU 400000000 //400Mhz
+#define FASTIO 0
+
+#define HAL_TIMER_RATE         (F_CPU / 4)  // frequency of timers peripherals
+#define STEPPER_TIMER_RATE     HAL_TIMER_RATE   // frequency of stepper timer (HAL_TIMER_RATE / STEPPER_TIMER_PRESCALE)
+#define STEPPER_TIMER_TICKS_PER_US ((STEPPER_TIMER_RATE) / 1000000) // stepper timer ticks per µs
+#define STEPPER_TIMER_PRESCALE (CYCLES_PER_MICROSECOND / STEPPER_TIMER_TICKS_PER_US)
+
+#define PULSE_TIMER_RATE       STEPPER_TIMER_RATE   // frequency of pulse timer
+#define PULSE_TIMER_PRESCALE   STEPPER_TIMER_PRESCALE
+#define PULSE_TIMER_TICKS_PER_US STEPPER_TIMER_TICKS_PER_US
 
 #define ECHO_FLOAT(x) printf("%lf", x)
 #define ECHO_STRING(x) printf("%s", x)

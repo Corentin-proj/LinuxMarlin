@@ -30,7 +30,7 @@
 #include "Marlin.h"
 #include "Configuration.h"
 #include "ConfigurationStore.h"
-#include "Arduino.h"
+#include "Arduino_marlin.h"
 #include "temperature.h"
 #include "planner.h"
 #include "stepper.h"
@@ -269,7 +269,7 @@ static void run_z_probe() {
     st_synchronize();
 
     // move back down slowly to find bed
-    feedrate = homing_feedrate[Z_AXIS]/4; 
+    feedrate = homing_feedrate[Z_AXIS]/4;
     zPosition -= home_retract_mm(Z_AXIS) * 2;
     plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], zPosition, current_position[E_AXIS], feedrate/60, active_extruder);
     st_synchronize();
@@ -385,7 +385,7 @@ bool get_command()
 
     //if cur_char is ';', turn comment_mode on.
     //if cur_char is '\n', end of line. turn comment_mode off. Check read_count,
-    ////if 0, this is an empty or comment line. 
+    ////if 0, this is an empty or comment line.
     ////if not 0, there must be something in the cmdbuffer, return.
     //if not ';' or '\n', check comment_mode.
     ////if on, do nothing.
@@ -396,7 +396,7 @@ bool get_command()
     }
     else if (cur_char == '\n') {
       if (read_count == 0) {
-        //this is an empty or comment line 
+        //this is an empty or comment line
         return false;
       } else {
         cmdbuffer[read_count] = '\0';
@@ -426,7 +426,7 @@ bool get_command()
     }
     else {
       if (!comment_mode) {
-        cmdbuffer[read_count++] = cur_char; 
+        cmdbuffer[read_count++] = cur_char;
       }
     }
   }
@@ -453,7 +453,7 @@ static void homeaxis(int axis) {
 
     current_position[axis] = 0;
     plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-	
+
     destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
     feedrate = homing_feedrate[axis];
     plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
@@ -524,12 +524,12 @@ void do_home()
       current_position[Y_AXIS]=code_value()+add_homeing[1];
     }
   }
-  
+
   #ifndef Z_SAFE_HOMING
   if((home_all_axis) || (code_seen(axis_codes[Z_AXIS]))) {
   #if defined (Z_RAISE_BEFORE_HOMING) && (Z_RAISE_BEFORE_HOMING > 0)
     // Set destination away from bed
-    destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING * home_dir(Z_AXIS) * (-1);   
+    destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING * home_dir(Z_AXIS) * (-1);
     feedrate = max_feedrate[Z_AXIS];
     plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS],
         destination[E_AXIS], feedrate, active_extruder);
@@ -537,15 +537,15 @@ void do_home()
   #endif
     HOMEAXIS(Z);
   }
-  #else                      // Z Safe mode activated. 
+  #else                      // Z Safe mode activated.
   if(home_all_axis) {
     destination[X_AXIS] = round(Z_SAFE_HOMING_X_POINT - bed_level_probe_offset[0]);
     destination[Y_AXIS] = round(Z_SAFE_HOMING_Y_POINT - bed_level_probe_offset[1]);
     // Set destination away from bed
-    destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING * home_dir(Z_AXIS) * (-1);  
+    destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING * home_dir(Z_AXIS) * (-1);
     feedrate = XY_TRAVEL_SPEED;
     current_position[Z_AXIS] = 0;
-	
+
     plan_set_position(current_position[X_AXIS], current_position[Y_AXIS],
         current_position[Z_AXIS], current_position[E_AXIS]);
     plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS],
@@ -565,9 +565,9 @@ void do_home()
 
       current_position[Z_AXIS] = 0;
       plan_set_position(current_position[X_AXIS], current_position[Y_AXIS],
-          current_position[Z_AXIS], current_position[E_AXIS]);			  
+          current_position[Z_AXIS], current_position[E_AXIS]);
       // Set destination away from bed
-      destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING * home_dir(Z_AXIS) * (-1);   
+      destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING * home_dir(Z_AXIS) * (-1);
       feedrate = max_feedrate[Z_AXIS];
       plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS],
           destination[E_AXIS], feedrate, active_extruder);
@@ -628,7 +628,7 @@ void do_auto_bed_leveling()
   setup_for_endstop_move();
 
   feedrate = homing_feedrate[Z_AXIS];
-  
+
   // prob 1
   do_blocking_move_to(current_position[X_AXIS], current_position[Y_AXIS], Z_RAISE_BEFORE_PROBING);
   do_blocking_move_to(LEFT_PROBE_BED_POSITION - bed_level_probe_offset[0], BACK_PROBE_BED_POSITION - bed_level_probe_offset[1], current_position[Z_AXIS]);
@@ -654,7 +654,7 @@ void do_auto_bed_leveling()
   run_z_probe();
   float z_at_xLeft_yFront = current_position[Z_AXIS];
   //retract_z_probe();
-  
+
   ECHO_STRING("Bed x: ");
   ECHO_FLOAT(LEFT_PROBE_BED_POSITION);
   ECHO_STRING(" y: ");
@@ -672,7 +672,7 @@ void do_auto_bed_leveling()
   run_z_probe();
   float z_at_xRight_yFront = current_position[Z_AXIS];
   //retract_z_probe(); // Retract Z Servo endstop if available
-  
+
   ECHO_STRING("Bed x: ");
   ECHO_FLOAT(RIGHT_PROBE_BED_POSITION);
   ECHO_STRING(" y: ");
@@ -685,10 +685,10 @@ void do_auto_bed_leveling()
 
   set_bed_level_equation(z_at_xLeft_yFront, z_at_xRight_yFront, z_at_xLeft_yBack);
 
-  st_synchronize();            
+  st_synchronize();
 
   // The following code correct the Z height difference from z-probe position and hotend tip position.
-  // The Z height on homing is measured by Z-Probe, but the probe is quite far from the hotend. 
+  // The Z height on homing is measured by Z-Probe, but the probe is quite far from the hotend.
   // When the bed is uneven, this height must be corrected.
   real_z = ((float)st_get_position(Z_AXIS))/axis_steps_per_unit[Z_AXIS];  //get the real Z (since the auto bed leveling is already correcting the plane)
   x_tmp = current_position[X_AXIS] + bed_level_probe_offset[0];
@@ -746,13 +746,13 @@ void set_temp_and_wait()
       autotemp_enabled=true;
     }
   #endif
-  
+
   setWatch();
   codenum = millis();
-  
+
   /* See if we are heating up or cooling down */
   target_direction = isHeatingHotend(tmp_extruder); // true if heating, false if cooling
-  
+
   long residencyStart;
   residencyStart = -1;
   /* continue to loop until we have reached the target temp

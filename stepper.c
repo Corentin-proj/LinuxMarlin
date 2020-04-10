@@ -29,7 +29,7 @@
 #include "speed_lookuptable.h"
 #include <mraa.h>
 #include "fastio.h"
-#include "Arduino.h"
+#include "Arduino_marlin.h"
 
 
 //===========================================================================
@@ -219,7 +219,7 @@ void step_wait(){
 
 
 FORCE_INLINE unsigned short calc_timer(unsigned short step_rate) {
-  unsigned short timer;
+  uint32_t timer;
   if(step_rate > MAX_STEP_FREQUENCY) step_rate = MAX_STEP_FREQUENCY;
 
   if(step_rate > 20000) { // If steprate > 20kHz >> step 4 times
@@ -235,16 +235,30 @@ FORCE_INLINE unsigned short calc_timer(unsigned short step_rate) {
   }
 
   if(step_rate < (F_CPU/500000)) step_rate = (F_CPU/500000);
-  step_rate -= (F_CPU/500000); // Correct for minimal speed
+  //step_rate -= (F_CPU/500000); // Correct for minimal speed
   if(step_rate >= (8*256)){ // higher step rate
-    unsigned char tmp_step_rate = (step_rate & 0x00ff);
-    unsigned short gain = (unsigned short)speed_lookuptable_fast[(unsigned char)(step_rate>>8)][1];
-    MultiU16X8toH16(timer, tmp_step_rate, gain);
-    timer = (unsigned short)speed_lookuptable_fast[(unsigned char)(step_rate>>8)][0] - timer;
+    #if(F_CPU>20000000)
+      // In case of high-performance processor, it is able to calculate in real-time
+      timer = (uint32_t)STEPPER_TIMER_RATE / step_rate;
+
+    #elif
+      unsigned char tmp_step_rate = (step_rate & 0x00ff);
+      unsigned short gain = (unsigned short)speed_lookuptable_fast[(unsigned char)(step_rate>>8)][1];
+      MultiU16X8toH16(timer, tmp_step_rate, gain);
+      timer = (unsigned short)speed_lookuptable_fast[(unsigned char)(step_rate>>8)][0] - timer;
+
+    #endif
   }
   else { // lower step rates
-    timer = (unsigned short)speed_lookuptable_slow[(unsigned char)(step_rate>>3)][0];
-    timer -= (((unsigned short)speed_lookuptable_slow[(unsigned char)(step_rate>>3)][1] * (unsigned char)(step_rate & 0x0007))>>3);
+    #if(F_CPU>20000000)
+      // In case of high-performance processor, it is able to calculate in real-time
+      timer = (uint32_t)STEPPER_TIMER_RATE / step_rate;
+
+    #elif
+      timer = (unsigned short)speed_lookuptable_slow[(unsigned char)(step_rate>>3)][0];
+      timer -= (((unsigned short)speed_lookuptable_slow[(unsigned char)(step_rate>>3)][1] * (unsigned char)(step_rate & 0x0007))>>3);
+
+    #endif
   }
   if(timer < 100) { timer = 100; ECHO_STRING(MSG_STEPPER_TOO_HIGH); ECHO_DECIMAL(step_rate); }//(20kHz this should never happen)
   return timer;
@@ -315,7 +329,7 @@ static void * handler(void * arg)
       // Set directions TO DO This should be done once during init of trapezoid. Endstops -> interrupt
       out_bits = current_block->direction_bits;
 
-      // Set the direction bits 
+      // Set the direction bits
       if((out_bits & (1<<X_AXIS))!=0){
         WRITE(X_DIR_PIN, INVERT_X_DIR);
         count_direction[X_AXIS]=-1;
@@ -330,7 +344,7 @@ static void * handler(void * arg)
         WRITE(Y_DIR_PIN, !INVERT_Y_DIR);
         count_direction[Y_AXIS]=1;
       }
-      if ((out_bits & (1<<Z_AXIS)) != 0) {   
+      if ((out_bits & (1<<Z_AXIS)) != 0) {
         WRITE(Z_DIR_PIN,INVERT_Z_DIR);
         count_direction[Z_AXIS]=-1;
       } else {
@@ -429,19 +443,19 @@ static void * handler(void * arg)
         counter_x += current_block->steps_x;
         pthread_spin_lock(&count_spinlock);
         if (counter_x > 0)
-          count_position[X_AXIS]+=count_direction[X_AXIS];   
+          count_position[X_AXIS]+=count_direction[X_AXIS];
         if (counter_y > 0)
           count_position[Y_AXIS]+=count_direction[Y_AXIS];
         if (counter_z > 0)
           count_position[Z_AXIS]+=count_direction[Z_AXIS];
-        if (counter_e > 0) 
+        if (counter_e > 0)
           count_position[E_AXIS]+=count_direction[E_AXIS];
         pthread_spin_unlock(&count_spinlock);
 
         if (counter_x > 0) {
           WRITE(X_STEP_PIN, !INVERT_X_STEP_PIN);
           counter_x -= current_block->step_event_count;
-          //count_position[X_AXIS]+=count_direction[X_AXIS];   
+          //count_position[X_AXIS]+=count_direction[X_AXIS];
           WRITE(X_STEP_PIN, INVERT_X_STEP_PIN);
         }
 
@@ -451,7 +465,7 @@ static void * handler(void * arg)
           counter_y -= current_block->step_event_count;
           //count_position[Y_AXIS]+=count_direction[Y_AXIS];
           WRITE(Y_STEP_PIN, INVERT_Y_STEP_PIN);
-        
+
         }
 
         counter_z += current_block->steps_z;
@@ -460,7 +474,7 @@ static void * handler(void * arg)
           counter_z -= current_block->step_event_count;
           //count_position[Z_AXIS]+=count_direction[Z_AXIS];
           WRITE(Z_STEP_PIN, INVERT_Z_STEP_PIN);
-          
+
         }
 
         counter_e += current_block->steps_e;
