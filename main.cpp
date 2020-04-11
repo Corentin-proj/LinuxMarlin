@@ -116,16 +116,19 @@ int main(int argc, char * argv[])
 	return 0;
 }
 */
-#include "gpio.h"
+#include "Marlin_main.h"
+
 int main(int argc, char * argv[])
 {
+	#if MRAA == 0
 	// Call Arduino init
 	init(argc, argv);
 
 	// Init IRQ layer
 	// Called after init() to ensure I/O permissions inherited by pthread
 	interrupt_init();
+	#endif
 
-	main_gpio();
+	marlin_main(argc,argv);
 	return 0;
 }

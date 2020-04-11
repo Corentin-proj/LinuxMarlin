@@ -27,92 +27,7 @@
     http://reprap.org/pipermail/reprap-dev/2011-May/003323.html
  */
 
-#include "Marlin.h"
-#include "Configuration.h"
-#include "ConfigurationStore.h"
-#include "Arduino_marlin.h"
-#include "temperature.h"
-#include "planner.h"
-#include "stepper.h"
-#include "language.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-
-#include <fcntl.h>
-#include <sys/stat.h>
-
-//===========================================================================
-//=============================public variables=============================
-//===========================================================================
-// none of variables here need to be protected by lock coz they won't be
-// accessed from except the main thread
-int extrudemultiply=100; //100->1 200->2
-float add_homeing[3]={0,0,0};
-bool axis_known_position[3] = {false, false, false};
-//--TOM--: the active extruder is always #0 coz that's the only one we've got
-char active_extruder = 0;
-int fanSpeed=0;
-
-float base_min_pos[3] = { X_MIN_POS_DEFAULT, Y_MIN_POS_DEFAULT, Z_MIN_POS_DEFAULT };
-float base_max_pos[3] = { X_MAX_POS_DEFAULT, Y_MAX_POS_DEFAULT, Z_MAX_POS_DEFAULT };
-#ifdef ENABLE_AUTO_BED_LEVELING
-float bed_level_probe_offset[3] = {X_PROBE_OFFSET_FROM_EXTRUDER_DEFAULT,
-	Y_PROBE_OFFSET_FROM_EXTRUDER_DEFAULT, -Z_PROBE_OFFSET_FROM_EXTRUDER_DEFAULT};
-#endif
-
-//===========================================================================
-//=============================private variables=============================
-//===========================================================================
-static float homing_feedrate[] = HOMING_FEEDRATE;
-static bool axis_relative_modes[] = AXIS_RELATIVE_MODES;
-static int feedmultiply=100; //100->1 200->2
-static int saved_feedmultiply;
-static float min_pos[3] = { X_MIN_POS_DEFAULT, Y_MIN_POS_DEFAULT, Z_MIN_POS_DEFAULT };
-static float max_pos[3] = { X_MAX_POS_DEFAULT, Y_MAX_POS_DEFAULT, Z_MAX_POS_DEFAULT };
-static float current_position[NUM_AXIS] = { 0.0, 0.0, 0.0, 0.0 };
-static float destination[NUM_AXIS] = {  0.0, 0.0, 0.0, 0.0};
-static const char axis_codes[NUM_AXIS] = {'X', 'Y', 'Z', 'E'};
-static float offset[3] = {0.0, 0.0, 0.0};
-static bool home_all_axis = true;
-static float feedrate = 1500.0, next_feedrate, saved_feedrate;
-static long gcode_N, gcode_LastN, Stopped_gcode_LastN = 0;
-static bool relative_mode = false;  //Determines Absolute or Relative Coordinates
-
-static char cmdbuffer[MAX_CMD_SIZE];
-static char *strchr_pointer; // just a pointer to find chars in the cmd string like X, Y, Z, E, etc
-
-//Inactivity shutdown variables
-static unsigned long previous_millis_cmd = 0;
-static unsigned long max_inactive_time = 0;
-static unsigned long stepper_inactive_time = DEFAULT_STEPPER_DEACTIVE_TIME*1000l;
-
-static unsigned long starttime=0;
-static unsigned long stoptime=0;
-
-static uint8_t tmp_extruder;
-
-static bool target_direction;
-static bool Stopped = false;
-
-static char *file_buf = NULL;
-static int file_size;
-
-#define XYZ_CONSTS_FROM_CONFIG(type, array, CONFIG) \
-static const type array##_P[3] =        \
-    { X_##CONFIG, Y_##CONFIG, Z_##CONFIG };     \
-static inline type array(int axis)          \
-    { return array##_P[axis]; }
-
-#define XYZ_DYN_FROM_CONFIG(type, array, CONFIG)	\
-static inline type array(int axis)			\
-    { type temp[3] = { X_##CONFIG, Y_##CONFIG, Z_##CONFIG };\
-      return temp[axis];}
-
-XYZ_DYN_FROM_CONFIG(float, base_home_pos,   HOME_POS);
-XYZ_DYN_FROM_CONFIG(float, max_length, MAX_LENGTH);
-XYZ_CONSTS_FROM_CONFIG(float, home_retract_mm, HOME_RETRACT_MM);
-XYZ_CONSTS_FROM_CONFIG(signed char, home_dir,  HOME_DIR);
+#include "Marlin_main.h"
 
 //===========================================================================
 //=============================ROUTINES=============================
@@ -158,7 +73,7 @@ void ikill()
 
 /***********************************/
 
-int main(int argc, char *argv[]) {
+int marlin_main(int argc, char *argv[]) {
 
   if (argc != 2) {
     printf("Wrong number of arguments provided... Provided %d instead \
@@ -215,9 +130,11 @@ int setup(char *path)
 
   //init board specific data
   DEBUG_PRINT("initializing board specific data\n");
+	#if MRAA == 1
   mraa_init();
   minnowmax_gpio_init();
-  //minnowmax_i2c_init();
+	#endif
+
 
   //timer_init();
 

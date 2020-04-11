@@ -7,6 +7,8 @@
 #define _FASTIO_ARDUINO_H
 
 #include <mraa.h>
+/*arduino headers*/
+#include "Arduino.h"
 
 #define NGPIO 19
 #define ADC_ADDRESS 0x48
@@ -20,7 +22,7 @@ struct gpio_context {
 extern struct gpio_context gpio_cxt[NGPIO+1];
 
 void WRITE(unsigned IO, int v);
-int READ(unsigned IO); 
+int READ(unsigned IO);
 
 void SET_INPUT(unsigned IO);
 void SET_OUTPUT(unsigned IO);
