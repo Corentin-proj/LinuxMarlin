@@ -65,7 +65,7 @@ CFLAGS    += -lmraa
 CFLAGS    += -lpthread
 CFLAGS    += -DDEBUG
 CFLAGS    += -ggdb
-#CFLAGS    += -Wall
+CFLAGS    += -Wall
 
 CXXFLAGS  += $(CFLAGS)
 

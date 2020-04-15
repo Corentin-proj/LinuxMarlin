@@ -50,33 +50,33 @@ void Config_PrintSettings()
     ECHOPAIR_F(" Y",axis_steps_per_unit[1]);
     ECHOPAIR_F(" Z",axis_steps_per_unit[2]);
     ECHOPAIR_F(" E",axis_steps_per_unit[3]);
-      
+
     ECHO_STRING("Maximum feedrates (mm/s):");
     ECHOPAIR_F("  M203 X",max_feedrate[0]);
-    ECHOPAIR_F(" Y",max_feedrate[1] ); 
-    ECHOPAIR_F(" Z", max_feedrate[2] ); 
+    ECHOPAIR_F(" Y",max_feedrate[1] );
+    ECHOPAIR_F(" Z", max_feedrate[2] );
     ECHOPAIR_F(" E", max_feedrate[3]);
     ECHO_STRING("");
 
     ECHO_STRING("Maximum Acceleration (mm/s2):");
-    ECHOPAIR_L("  M201 X" ,max_acceleration_units_per_sq_second[0] ); 
-    ECHOPAIR_L(" Y" , max_acceleration_units_per_sq_second[1] ); 
+    ECHOPAIR_L("  M201 X" ,max_acceleration_units_per_sq_second[0] );
+    ECHOPAIR_L(" Y" , max_acceleration_units_per_sq_second[1] );
     ECHOPAIR_L(" Z" ,max_acceleration_units_per_sq_second[2] );
     ECHOPAIR_L(" E" ,max_acceleration_units_per_sq_second[3]);
     ECHO_STRING("");
     ECHO_STRING("Acceleration: S=acceleration, T=retract acceleration");
-    ECHOPAIR_F("  M204 S",acceleration ); 
+    ECHOPAIR_F("  M204 S",acceleration );
     ECHOPAIR_F(" T" ,retract_acceleration);
     ECHO_STRING("");
 
     ECHO_STRING("Advanced variables: S=Min feedrate (mm/s), T=Min travel feedrate (mm/s), B=minimum segment time (ms), X=maximum XY jerk (mm/s),  Z=maximum Z jerk (mm/s),  E=maximum E jerk (mm/s)");
-    ECHOPAIR_F("  M205 S",minimumfeedrate ); 
-    ECHOPAIR_F(" T" ,mintravelfeedrate ); 
-    ECHOPAIR_L(" B" ,minsegmenttime ); 
-    ECHOPAIR_F(" X" ,max_xy_jerk ); 
+    ECHOPAIR_F("  M205 S",minimumfeedrate );
+    ECHOPAIR_F(" T" ,mintravelfeedrate );
+    ECHOPAIR_L(" B" ,minsegmenttime );
+    ECHOPAIR_F(" X" ,max_xy_jerk );
     ECHOPAIR_F(" Z" ,max_z_jerk);
     ECHOPAIR_F(" E" ,max_e_jerk);
-    ECHO_STRING(""); 
+    ECHO_STRING("");
 
     ECHO_STRING("Home offset (mm):");
     ECHOPAIR_F("  M206 X",add_homeing[0] );
@@ -85,10 +85,10 @@ void Config_PrintSettings()
     ECHO_STRING("");
 #ifdef PIDTEMP
     ECHO_STRING("PID settings:");
-    ECHOPAIR_F("   M301 P",Kp); 
-    ECHOPAIR_F(" I" ,unscalePID_i(Ki)); 
+    ECHOPAIR_F("   M301 P",Kp);
+    ECHOPAIR_F(" I" ,unscalePID_i(Ki));
     ECHOPAIR_F(" D" ,unscalePID_d(Kd));
-    ECHO_STRING(""); 
+    ECHO_STRING("");
 #endif
     ECHO_STRING("Min position (mm):");
     ECHOPAIR_F("  M210 X" , base_min_pos[0] );
@@ -107,7 +107,7 @@ void Config_PrintSettings()
     ECHOPAIR_F(" Z" , bed_level_probe_offset[2] );
     ECHO_STRING("");
 #endif
-} 
+}
 #endif
 
 
@@ -118,20 +118,20 @@ void Config_ResetDefault()
     float tmp2[]=DEFAULT_MAX_FEEDRATE;
     long tmp3[]=DEFAULT_MAX_ACCELERATION;
 		short i;
-    for (i=0;i<4;i++) 
+    for (i=0;i<4;i++)
     {
-        axis_steps_per_unit[i]=tmp1[i];  
-        max_feedrate[i]=tmp2[i];  
+        axis_steps_per_unit[i]=tmp1[i];
+        max_feedrate[i]=tmp2[i];
         max_acceleration_units_per_sq_second[i]=tmp3[i];
     }
-    
+
     // steps per sq second need to be updated to agree with the units per sq second
     reset_acceleration_rates();
-    
+
     acceleration=DEFAULT_ACCELERATION;
     retract_acceleration=DEFAULT_RETRACT_ACCELERATION;
     minimumfeedrate=DEFAULT_MINIMUMFEEDRATE;
-    minsegmenttime=DEFAULT_MINSEGMENTTIME;       
+    minsegmenttime=DEFAULT_MINSEGMENTTIME;
     mintravelfeedrate=DEFAULT_MINTRAVELFEEDRATE;
     max_xy_jerk=DEFAULT_XYJERK;
     max_z_jerk=DEFAULT_ZJERK;
@@ -149,10 +149,10 @@ void Config_ResetDefault()
     Kp = DEFAULT_Kp;
     Ki = scalePID_i(DEFAULT_Ki);
     Kd = scalePID_d(DEFAULT_Kd);
-    
+
     // call updatePID (similar to when we have processed M301)
     updatePID();
-    
+
 #ifdef PID_ADD_EXTRUSION_RATE
     Kc = DEFAULT_Kc;
 #endif//PID_ADD_EXTRUSION_RATE

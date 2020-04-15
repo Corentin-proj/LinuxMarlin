@@ -29,25 +29,6 @@ static inline uint64_t rdtsc(void)
     return returnVal;
 }
 
-unsigned long millis( void )
-{
-    /* similar to the micros() function, it returns ms since sketch start up time.
-     The underlying counter is a 64 bit value, but the representation of millis
-     as unsigned 32-bits means it recycles in ~ 1190 hours.*/
-
-    //uint64_t tsc_cur = rdtsc(), diff = 0, divisor = 0;
-    //divisor = (cpufreq * 1000);
-    //diff = tsc_cur - tsc_init;
-    struct timeval end;
-    uint64_t diff;
-
-    gettimeofday(&end, NULL);
-    diff = (end.tv_sec * 1000000 + end.tv_usec)
-            - (start.tv_sec * 1000000 + start.tv_usec);
-
-    return (diff / 1000);
-}
-
 /* TSC snapshot */
 int clock_init(void)
 {
@@ -101,6 +82,27 @@ int clock_init(void)
     printf("nanoseconds per clock %f\n", clocks_per_ns);
 }
 
+
+#if MRAA == 1
+unsigned long millis( void )
+{
+    /* similar to the micros() function, it returns ms since sketch start up time.
+     The underlying counter is a 64 bit value, but the representation of millis
+     as unsigned 32-bits means it recycles in ~ 1190 hours.*/
+
+    //uint64_t tsc_cur = rdtsc(), diff = 0, divisor = 0;
+    //divisor = (cpufreq * 1000);
+    //diff = tsc_cur - tsc_init;
+    struct timeval end;
+    uint64_t diff;
+
+    gettimeofday(&end, NULL);
+    diff = (end.tv_sec * 1000000 + end.tv_usec)
+            - (start.tv_sec * 1000000 + start.tv_usec);
+
+    return (diff / 1000);
+}
+
 int digitalRead(int pin)
 {
   return READ(pin);
@@ -109,22 +111,7 @@ int digitalRead(int pin)
 void digitalWrite(int pin, int val)
 {
   WRITE(pin, val);
-}
-
-//void delay(unsigned long time)
-//{
-//  unsigned long start = millis();
-//  while (millis() - start < time) ;
-//}
-
-void delay(unsigned long ms)
-{
-  usleep(ms * 1000);
-}
-
-void delayMicroseconds(unsigned long us)
-{
-	usleep(us);
+  return;
 }
 
 float constrain(float x, float a, float b)
@@ -133,5 +120,24 @@ float constrain(float x, float a, float b)
   else if (x < a) return a;
   else return b;
 }
+
+void delay(unsigned long ms)
+{
+  usleep(ms * 1000);
+  return;
+}
+
+void delayMicroseconds(unsigned long us)
+{
+	usleep(us);
+  return;
+}
+#endif
+//void delay(unsigned long time)
+//{
+//  unsigned long start = millis();
+//  while (millis() - start < time) ;
+//}
+
 
 /* vi: set et sw=2 sts=2: */

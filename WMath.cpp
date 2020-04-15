@@ -8,7 +8,7 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
@@ -33,7 +33,7 @@ void randomSeed( uint32_t dwSeed )
     srand( dwSeed ) ;
   }
 }
-
+/*
 long random( long howbig )
 {
   if ( howbig == 0 )
@@ -55,14 +55,14 @@ long random( long howsmall, long howbig )
 
   return random(diff) + howsmall;
 }
-
+*/
 
 long map(long x, long in_min, long in_max, long out_min, long out_max)
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-
+/*
 uint16_t makeWord( uint16_t w )
 {
   return w;
@@ -72,4 +72,4 @@ uint16_t makeWord( uint8_t h, uint8_t l )
 {
   return (h << 8) | l ;
 }
-
+*/

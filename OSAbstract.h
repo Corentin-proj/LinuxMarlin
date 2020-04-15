@@ -20,8 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #define __OS_ABSTRACT_H__
 
 void init(int argc, char * argv[]);
-void setup(void);
-void loop(void);
+//void setup(void);
+//void loop(void);
 
 #define likely(x)       __builtin_expect(!!(x), 1)
 #define unlikely(x)     __builtin_expect(!!(x), 0)

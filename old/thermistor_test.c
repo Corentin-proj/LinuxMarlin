@@ -27,7 +27,7 @@ float current_temperature = 0.0;
 
 static void *heater_ttbl_map[1] = {(void *)HEATER_0_TEMPTABLE,};
 static uint8_t heater_ttbllen_map[1] = {HEATER_0_TEMPTABLE_LEN,};
-
+/*
 void minnowmax_i2c_init()
 {
   temp_sensor = mraa_i2c_init_raw(0);
@@ -38,7 +38,7 @@ void minnowmax_i2c_init()
   if (mraa_i2c_address(temp_sensor, ADDRESS) != MRAA_SUCCESS)
     errExit("mraa_i2c_address");
 }
-
+*/
 static float analog2temp(int raw, uint8_t e)
 {
   if(heater_ttbl_map[e] != NULL)
@@ -51,8 +51,8 @@ static float analog2temp(int raw, uint8_t e)
     {
       if ((*tt)[i][0] > raw)
       {
-        celsius = (*tt)[i-1][1] + 
-          (raw - (*tt)[i-1][0]) * 
+        celsius = (*tt)[i-1][1] +
+          (raw - (*tt)[i-1][0]) *
           (float)((*tt)[i][1] - (*tt)[i-1][1]) /
           (float)((*tt)[i][0] - (*tt)[i-1][0]);
         break;
@@ -73,7 +73,7 @@ static void updateTemperaturesFromRawValues()
 	printf("current temperature is %lf\n", current_temperature);
 }
 
-
+/*
 int main()
 {
   static unsigned char temp_count = 0;
@@ -105,3 +105,4 @@ int main()
 		sleep(1);
 	}
 }
+*/

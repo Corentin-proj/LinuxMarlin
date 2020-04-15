@@ -4,8 +4,6 @@
 #ifndef MARLIN_H
 #define MARLIN_H
 
-#define  FORCE_INLINE __attribute__((always_inline)) inline
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +22,8 @@
 #include "Configuration.h"
 #include "pins.h"
 #include <signal.h>
+
+#define  FORCE_INLINE __attribute__((always_inline)) inline
 
 //CPU frequency in Hz
 //#define F_CPU 16000000
@@ -58,7 +58,7 @@
 enum AxisEnum {X_AXIS=0, Y_AXIS=1, Z_AXIS=2, E_AXIS=3};
 
 int setup(char *path);
-void loop();
+//void loop();
 bool get_command();
 void process_commands();
 void get_coordinates();
@@ -145,6 +145,7 @@ extern bool axis_known_position[3];
 extern unsigned char fanSpeedSoftPwm;
 #endif
 
+#if MRAA == 1
 #define max(a,b) \
    ({ __typeof__ (a) _a = (a); \
       __typeof__ (b) _b = (b); \
@@ -154,6 +155,7 @@ extern unsigned char fanSpeedSoftPwm;
    ({ __typeof__ (a) _a = (a); \
       __typeof__ (b) _b = (b); \
      _a > _b ? _b : _a; })
+ #endif
 
 #define square(x) (x*x)
 

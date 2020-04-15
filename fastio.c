@@ -171,12 +171,16 @@ void WRITE(unsigned IO, int v)
 int READ(unsigned IO)
 {
 	//DEBUG_PRINT("reading from pin %s\n", gpio_cxt[IO].pin_name);
-  if (IO > NGPIO)
+  if (IO > NGPIO){
     errExit("invalid pin\n");
+	}
+  /*
 	if (!gpio_cxt[IO].mraa_cxt) {
 		errExit("read from uninitialized gpio");
 	}
 	return mraa_gpio_read(gpio_cxt[IO].mraa_cxt);
+	*/
+	digitalRead(IO);
 }
 #endif
 /* vi: set et sw=2 sts=2: */

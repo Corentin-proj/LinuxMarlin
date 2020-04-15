@@ -6,16 +6,18 @@
 
 typedef unsigned char byte;
 
-unsigned long millis();
 int clock_init();
 
-void delay(unsigned long time);
-float constrain(float x, float a, float b);
-
+#if MRAA == 1
+unsigned long millis();
 int digitalRead(int pin);
 void digitalWrite(int pin, int val);
-void analogWrite(int pin, int val);
+void delay(unsigned long time);
 void delayMicroseconds(unsigned long us);
+void analogWrite(int pin, int val);
+float constrain(float x, float a, float b);
+
+#endif
 #endif
 
 /* vi: set et sw=2 sts=2: */

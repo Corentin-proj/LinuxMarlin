@@ -1,4 +1,4 @@
-#include "cgic.h"
+#include <cgic.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,7 +14,7 @@ int cgiMain() {
 	fprintf(cgiOut, "<HTML><HEAD>\n");
 	fprintf(cgiOut, "<TITLE>Submit Your Gcode</TITLE></HEAD>\n");
 	fprintf(cgiOut, "<BODY><H1>Submit Your Gcode</H1>\n");
-	/* If a submit button has already been clicked, act on the 
+	/* If a submit button has already been clicked, act on the
 		submission of the form. */
 	if ((cgiFormSubmitClicked("testcgic") == cgiFormSuccess))
 	{
@@ -45,8 +45,8 @@ void File()
 	if (cgiFormFileName("file", name, sizeof(name)) != cgiFormSuccess) {
 		printf("<p>No file was uploaded.<p>\n");
 		return;
-	} 
-	
+	}
+
 	char fileSave[80];
 	strcpy(fileSave, dir);
 	strcat(fileSave, name);

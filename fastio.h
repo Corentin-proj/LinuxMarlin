@@ -30,7 +30,7 @@ void SET_OUTPUT(unsigned IO);
 #define GET_OS_MAPPING(n) (gpio_cxt[n].linux_mapping)
 
 void minnowmax_gpio_init();
-void minnowmax_i2c_init();
+//void minnowmax_i2c_init();
 
 #endif
 

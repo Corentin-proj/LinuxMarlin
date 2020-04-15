@@ -8,7 +8,7 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
@@ -32,19 +32,23 @@ extern "C" {
 #undef word
 #endif
 
+/*
 #ifdef __cplusplus
 long int random( long ) ;
 long int random( long, long ) ;
 #endif
+*/
 
 void randomSeed( uint32_t dwSeed ) ;
 
 long map( long, long, long, long, long ) ;
 
+/*
 #ifdef __cplusplus
 uint16_t makeWord( uint16_t w) ;
 uint16_t makeWord( uint8_t h, uint8_t l ) ;
 #define word(...) makeWord(__VA_ARGS__)
 #endif
+*/
 
 #endif /* _WIRING_MATH_ */
