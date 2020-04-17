@@ -288,6 +288,7 @@ FORCE_INLINE void trapezoid_generator_reset() {
 //static void handler(void)
 static void * handler(void * arg)
 {
+  DEBUG_PRINT("Stepper handler\n");
   struct timespec t;
   // Counter variables for the bresenham line tracer
   long counter_x, counter_y, counter_z, counter_e;
@@ -678,6 +679,8 @@ void st_init()
 
   enable_endstops(true); // Start with endstops active. After homing they can be disabled
   //sei();
+
+  DEBUG_PRINT("Stepper thread initialized\n");
 }
 
 // Block until all buffered steps are executed

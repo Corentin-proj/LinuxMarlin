@@ -28,6 +28,7 @@
  */
 
  #include "Arduino.h"
+ #include <cstdlib>
 
  #ifdef __cplusplus
  extern "C" {
@@ -142,7 +143,7 @@ void loop(int file);
 
 float code_value()
 {
-  return (strtod(&cmdbuffer[strchr_pointer - cmdbuffer + 1], NULL));
+  return (strtod(&cmdbuffer[strchr_pointer - cmdbuffer + 1],NULL));
 }
 
 long code_value_long()
@@ -224,10 +225,17 @@ int setup(char *path)
 
   //init timer
   DEBUG_PRINT("initializing timer\n");
+  #if MRAA == 1
   if(clock_init() < 0) {
     fprintf(stderr, "Failed to init timer\n");
     exit(-1);
   }
+  #else
+  if(timeInit() < 0) {
+    fprintf(stderr, "Failed to init timer\n");
+    exit(-1);
+  }
+  #endif
 
   //init board specific data
   DEBUG_PRINT("initializing board specific data\n");
@@ -261,7 +269,6 @@ void loop(int fd)
     DEBUG_PRINT("%s\n", cmdbuffer);
     process_commands();
   }
-
   //check heater every n milliseconds
   //manage_heater();
   manage_inactivity();
@@ -992,9 +999,11 @@ void prepare_move()
 
 void manage_inactivity()
 {
-  if( (millis() - previous_millis_cmd) >  max_inactive_time )
-    if(max_inactive_time)
+  if( (millis() - previous_millis_cmd) >  max_inactive_time ){
+    if(max_inactive_time){
       ikill();
+    }
+  }
   if(stepper_inactive_time)  {
     if( (millis() - previous_millis_cmd) >  stepper_inactive_time )
     {
