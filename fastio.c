@@ -6,6 +6,8 @@ struct gpio_context gpio_cxt[NGPIO+1];
 struct gpio_context gpio30;
 mraa_i2c_context temp_sensor;
 
+int tmp = 0;
+
 /*
 static const int minnowmax_pin_mapping[NGPIO+1] = {
 	-1, -1, -1, -1, -1, 476, 481,
@@ -125,7 +127,7 @@ int READ(unsigned IO)
 
 void SET_OUTPUT(unsigned IO)
 {
-  DEBUG_PRINT("set output %d: %d\n", IO, GET_OS_MAPPING(IO));
+  DEBUG_PRINT("set output %d\n", IO);
   if (IO > NGPIO) return;
 	/*
 	if (!gpio_cxt[IO].mraa_cxt) {
@@ -141,7 +143,7 @@ void SET_OUTPUT(unsigned IO)
 
 void SET_INPUT(unsigned IO)
 {
-	DEBUG_PRINT("setting up pin %s\n", gpio_cxt[IO].pin_name);
+	DEBUG_PRINT("setting up pin %d\n", IO);
   if (IO > NGPIO) return;
 	/*
 	if (!gpio_cxt[IO].mraa_cxt) {
@@ -165,7 +167,11 @@ void WRITE(unsigned IO, int v)
 	}
 	mraa_gpio_write(gpio_cxt[IO].mraa_cxt, v);
 	*/
+	//DEBUG_PRINT("digital write pin %d\n", IO);
+	//printf("digital write\n");
+	tmp=1;
 	digitalWrite(IO, v);
+	return ;
 }
 
 int READ(unsigned IO)
