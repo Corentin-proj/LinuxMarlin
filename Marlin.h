@@ -31,7 +31,11 @@
 #define __ARDUINO_X86__
 #define MRAA 0
 
-#define HAL_TIMER_RATE         (F_CPU / 4)  // frequency of timers peripherals
+#if MRAA == 1
+#define HAL_TIMER_RATE         (F_CPU/4)  // frequency of timers peripherals
+#else
+#define HAL_TIMER_RATE         (F_CPU/100)  // frequency of timers peripherals
+#endif
 #define STEPPER_TIMER_RATE     HAL_TIMER_RATE   // frequency of stepper timer (HAL_TIMER_RATE / STEPPER_TIMER_PRESCALE)
 #define STEPPER_TIMER_TICKS_PER_US ((STEPPER_TIMER_RATE) / 1000000) // stepper timer ticks per µs
 #define STEPPER_TIMER_PRESCALE (CYCLES_PER_MICROSECOND / STEPPER_TIMER_TICKS_PER_US)

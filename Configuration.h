@@ -267,7 +267,7 @@
 #endif
 
 // The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
-static const bool X_MIN_ENDSTOP_INVERTING = false; // set to true to invert the logic of the endstop.
+static const bool X_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
 static const bool Y_MIN_ENDSTOP_INVERTING = false; // set to true to invert the logic of the endstop.
 static const bool Z_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
 static const bool X_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic of the endstop.
@@ -400,10 +400,10 @@ static const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the 
 // default settings
 
 #define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,2020,96}
-#define DEFAULT_MAX_FEEDRATE          {2000, 2000, 10, 14}    // (mm/sec)
-#define DEFAULT_MAX_ACCELERATION      {2000,2000,30,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_MAX_FEEDRATE          {200000, 200000, 10, 14}    // (mm/sec)
+#define DEFAULT_MAX_ACCELERATION      {30000,30000,30,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
+#define DEFAULT_ACCELERATION          30000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for retracts
 
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
