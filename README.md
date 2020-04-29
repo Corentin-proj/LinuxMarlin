@@ -4,7 +4,8 @@ WORK IN PROGRESS (not tested yet)
 
 This software is a fork of [LinuxMarlin](https://github.com/QuestOS/LinuxMarlin) (a version of Marlin modified to run in YOCTO linux with PREEMPT_RT patch) modified to work on Simatic IOT2020 platform.  
 The YOCTO linux image with PREEMP_RT patch can be found [here](https://support.industry.siemens.com/cs/document/109761191/pc-based%3A-iot2000-realtime-download-seite?dti=0&lc=en-WW). 
-The Arduino libraries from intel_galileo is used in this project.
+
+The Arduino libraries from intel_galileo are used in this project.
 
 Additional documentations :
 
